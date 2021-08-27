@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DepartmentsService } from '../../services/departments.service'
+import { Department } from '../../interfaces/department'
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-departments',
@@ -6,10 +10,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./departments.component.scss']
 })
 export class DepartmentsComponent implements OnInit {
+  departments?: Department[];
+  $departments: Observable<Department[]>;
 
-  constructor() { }
+  constructor(
+    private departmentsService: DepartmentsService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+    //this.departments = this.departmentsService.departments;
+    // this.departmentsService.getDeparments().subscribe(departments => {
+    //   this.departments = departments;
+    // });
+    this.$departments = this.departmentsService.getDeparments();
   }
 
+  goToDepartment(departmentId: string): void {
+    this.router.navigate(['./timesheet', {id: departmentId}]);
+  }
 }
